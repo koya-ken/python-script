@@ -1,8 +1,8 @@
 import sqlite3
 import numpy as np
 import io
-# import zlib as compress
-import bz2 as compress
+# import zlib as compresser
+import bz2 as compresser
 
 # https://kotaeta.com/56789628
 
@@ -13,7 +13,7 @@ def empty():
 
 # empty.compress = lambda x: x
 # empty.decompress = lambda x: x
-# compress = empty
+# compresser = empty
 
 
 def adapt_array(arr):
@@ -23,11 +23,11 @@ def adapt_array(arr):
     out = io.BytesIO()
     np.save(out, arr)
     out.seek(0)
-    return sqlite3.Binary(compress.compress(out.read()))
+    return sqlite3.Binary(compresser.compress(out.read()))
 
 
 def convert_array(text):
-    out = io.BytesIO(compress.decompress(text))
+    out = io.BytesIO(compresser.decompress(text))
     out.seek(0)
     return np.load(out)
 
