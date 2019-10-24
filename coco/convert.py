@@ -1,8 +1,16 @@
 import msgpack
 import rapidjson as json
+import argparse
 
-with open('annotations/person_keypoints_train2017.json') as f:
+
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('-i', dest='inputfile', type=str, required=True)
+parser.add_argument('-o', dest='outputfile', type=str, required=True)
+
+args = parser.parse_args()
+
+with open(args.inputfile) as f:
     data = json.load(f)
 
-with open('data.msgpack', 'wb') as outfile:
+with open(args.outputfile, 'wb') as outfile:
     msgpack.pack(data, outfile, use_bin_type=False)
