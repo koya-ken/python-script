@@ -19,13 +19,23 @@ def preprocess_image(path, size):
     result[np.isnan(result)] = 0
     return result
 
-ROOT = "./img"
+ROOT = "./tomato"
 ls = os.listdir(ROOT)
 
 # 名前からラベルを持って来ます．
 obj_ls = [name.split("_")[0] for name in ls]
 
 ALL_IMAGE_PATH = [ROOT+"/"+path for path in ls]
+
+ROOT = "./orange"
+ls = os.listdir(ROOT)
+
+# 名前からラベルを持って来ます．
+obj_ls = [name.split("_")[0] for name in ls]
+
+ALL_IMAGE_PATH2 = [ROOT+"/"+path for path in ls]
+
+ALL_IMAGE_PATH = ALL_IMAGE_PATH + ALL_IMAGE_PATH2
 
 # 全画像に対して前処理する
 preprocess_images_as_vecs = [preprocess_image(path, 512) for path in ALL_IMAGE_PATH]
