@@ -1,16 +1,33 @@
 import msgpack
 import rapidjson as json
 import argparse
+import os
+import gc
 
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('-i', dest='inputfile', type=str, required=True)
-parser.add_argument('-o', dest='outputfile', type=str, required=True)
+def getargs():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument("inputfile", action="store")
+    args = parser.parse_args()
+    return args
 
-args = parser.parse_args()
 
-with open(args.inputfile) as f:
-    data = json.load(f)
+def convert(filepath):
+    basefilepath, ext = os.path.splitext(filepath)
+    outputfilepath = basefilepath + '.msgpack'
+    with open(filepath) as f:
+        data = json.load(f)
 
-with open(args.outputfile, 'wb') as outfile:
-    msgpack.pack(data, outfile, use_bin_type=False)
+    with open(outputfilepath, 'wb') as outfile:
+        msgpack.pack(data, outfile, use_bin_type=False)
+    del data
+    gc.collect()
+
+
+def main():
+    args = getargs()
+    [convert(file) for file in args.files]
+
+
+if __name__ == "__main__":
+    main()
